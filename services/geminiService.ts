@@ -65,7 +65,7 @@ export const generateModelImage = async (userImage: File): Promise<string> => {
         model,
         contents: { parts: [userImagePart, { text: prompt }] },
         config: {
-            responseModalities: [Modality.IMAGE, Modality.TEXT],
+            responseModalities: [Modality.IMAGE],
         },
     });
     return handleApiResponse(response);
@@ -86,7 +86,7 @@ export const generateVirtualTryOnImage = async (modelImageUrl: string, garmentIm
         model,
         contents: { parts: [modelImagePart, garmentImagePart, { text: prompt }] },
         config: {
-            responseModalities: [Modality.IMAGE, Modality.TEXT],
+            responseModalities: [Modality.IMAGE],
         },
     });
     return handleApiResponse(response);
@@ -99,7 +99,7 @@ export const generatePoseVariation = async (tryOnImageUrl: string, poseInstructi
         model,
         contents: { parts: [tryOnImagePart, { text: prompt }] },
         config: {
-            responseModalities: [Modality.IMAGE, Modality.TEXT],
+            responseModalities: [Modality.IMAGE],
         },
     });
     return handleApiResponse(response);
