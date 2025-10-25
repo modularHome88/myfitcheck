@@ -17,6 +17,16 @@
         }
       }
     </script>
+    <script>
+      // This polyfill prevents the app from crashing on GitHub Pages.
+      // The Gemini API key needs to be provided for the app to function.
+      window.process = {
+        env: {
+          // IMPORTANT: Replace this placeholder with your actual Google AI Studio API key.
+          API_KEY: 'YOUR_API_KEY_HERE',
+        }
+      };
+    </script>
     <script type="importmap">
       {
         "imports": {
@@ -40,11 +50,11 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://esm.sh/react-image-crop@^11.0.6/dist/ReactCrop.css" />
-    <link rel="stylesheet" href="./index.css" />
+    <link rel="stylesheet" href="/index.css" />
   </head>
   <body>
     <div id="root"></div>
     <!-- Change script type to "text/babel" and add presets to let Babel transpile it -->
-    <script type="text/babel" data-presets="react,typescript" data-type="module" src="./index.tsx"></script>
+    <script type="text/babel" data-presets="react,typescript" data-type="module" src="/index.tsx"></script>
   </body>
 </html>
