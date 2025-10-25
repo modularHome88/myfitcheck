@@ -5,6 +5,34 @@
 
 import { GoogleGenAI, GenerateContentResponse, Modality } from "@google/genai";
 
+const apiKey = process.env.API_KEY;
+
+// This check prevents the app from crashing with a blank page if the API key isn't set.
+if (!apiKey || apiKey === 'YOUR_GOOGLE_AI_STUDIO_API_KEY_HERE') {
+    const errorDiv = document.createElement('div');
+    errorDiv.innerHTML = `
+        <div style="font-family: sans-serif; padding: 2rem; text-align: center; background-color: #fef2f2;">
+            <h1 style="color: #b91c1c; font-size: 1.5rem;">API Key Not Found</h1>
+            <p style="color: #7f1d1d;">Please edit the <strong>index.html</strong> file and replace the placeholder text
+            <code>'YOUR_GOOGLE_AI_STUDIO_API_KEY_HERE'</code> with your actual Google AI Studio API key.</p>
+            <p style="margin-top: 1rem;">
+                <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener noreferrer" style="color: #1d4ed8; text-decoration: underline;">
+                    Get your Google AI Studio key here
+                </a>
+            </p>
+        </div>
+    `;
+    const root = document.getElementById('root');
+    if (root) {
+        root.innerHTML = '';
+        root.appendChild(errorDiv);
+    }
+    throw new Error("API Key Missing: Please edit index.html and replace placeholder with your actual Google AI Studio API key.");
+}
+
+const ai = new GoogleGenAI({ apiKey });
+const model = 'gemini-2.5-flash-image';
+
 const fileToPart = async (file: File) => {
     const dataUrl = await new Promise<string>((resolve, reject) => {
         const reader = new FileReader();
@@ -54,9 +82,6 @@ const handleApiResponse = (response: GenerateContentResponse): string => {
     const errorMessage = `The AI model did not return an image. ` + (textFeedback ? `The model responded with text: "${textFeedback}"` : "This can happen due to safety filters or if the request is too complex. Please try a different image.");
     throw new Error(errorMessage);
 };
-
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY! });
-const model = 'gemini-2.5-flash-image';
 
 export const generateModelImage = async (userImage: File): Promise<string> => {
     const userImagePart = await fileToPart(userImage);
